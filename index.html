@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Word Frequency Analyzer</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      text-align: center;
+      margin-top: 50px;
+    }
+
+    #inputText {
+      width: 80%;
+      height: 100px;
+    }
+
+    #frequencyTable {
+      margin-top: 20px;
+      width: 80%;
+      margin-left: auto;
+      margin-right: auto;
+      border-collapse: collapse;
+    }
+
+    #frequencyTable th, #frequencyTable td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
+
+    #frequencyTable th {
+      background-color: #f2f2f2;
+    }
+
+    #error {
+      color: red;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h2>Word Frequency Analyzer</h2>
+  <textarea id="inputText" placeholder="Enter text..." maxlength="2048"></textarea>
+  <button onclick="analyzeText()">Translate</button>
+  <div id="error"></div>
+  <table id="frequencyTable">
+    <thead>
+      <tr>
+        <th>Word</th>
+        <th>Frequency</th>
+      </tr>
+    </thead>
+    <tbody id="tableBody"></tbody>
+  </table>
+
+  <script>
+    function analyzeText() {
+      const inputText = document.getElementById('inputText').value.trim();
+
+      // Display error message if the input is empty
+      if (!inputText) {
+        document.getElementById('error').innerText = 'Error: Please enter text.';
+        return;
+      }
+
+      // Clear previous error messages and table content
+      document.getElementById('error').innerText = '';
+      document.getElementById('tableBody').innerHTML = '';
+
+      // Split text into words and count frequency
+      const words = inputText.split(/\s+/);
+      const wordFrequency = {};
+
+      words.forEach(word => {
+        const normalizedWord = word.toLowerCase();
+        wordFrequency[normalizedWord] = (wordFrequency[normalizedWord] || 0) + 1;
+      });
+
+      // Create a table row for each word and its frequency
+      const tableBody = document.getElementById('tableBody');
+      Object.keys(wordFrequency)
+        .sort((a, b) => wordFrequency[b] - wordFrequency[a])
+        .forEach(word => {
+          const row = tableBody.insertRow();
+          const cell1 = row.insertCell(0);
+          const cell2 = row.insertCell(1);
+          cell1.textContent = word;
+          cell2.textContent = wordFrequency[word];
+        });
+    }
+  </script>
+</body>
+</html>
